@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import axiosClient from "../axios-client";
 
 export default function DefaultLayout() {
-    const { user, token, notification, setUser, setToken } = useStateContext()
+    const { user, token, notification, setUser, setToken} = useStateContext()
 
     if (!token) {
         return <Navigate to="/login" />
@@ -33,6 +33,7 @@ export default function DefaultLayout() {
             <aside>
                 <Link to="/dashboard">Dashboard</Link>
                 <Link to="/users">Users</Link>
+                <Link to="/posts">Posts</Link>
             </aside>
             <div className="content">
                 <header>
