@@ -7,8 +7,9 @@ export default function Users() {
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { user } = useStateContext()
 
-    const {setNotification} = useStateContext()
+    const { setNotification } = useStateContext()
 
     useEffect(() => {
         getUsers();
@@ -18,19 +19,24 @@ export default function Users() {
         if (!window.confirm("Are you sure you want to delete this user?")) {
             return
         }
-        axiosClient.delete(`/users/${u.id}`)
-            .then(() => {
-                setNotification("User was successfully deleted")
-                getUsers()
-            })
+        if (user.id === u.id) {
+            setNotification("User cannot delete while is online")
+        } else {
+            axiosClient.delete(`/users/${u.id}`)
+                .then(() => {
+                    setNotification("User was successfully deleted")
+                    getUsers()
+                })
+        }
     }
+
+    // console.log(user.id);
 
     const getUsers = () => {
         setLoading(true)
         axiosClient.get('/users')
             .then(({ data }) => {
                 setLoading(false)
-                console.log(data);
                 setUsers(data.data)
             })
             .catch(() => {
